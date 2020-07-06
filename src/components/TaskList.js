@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import TaskContext from "./../contexts/TaskContext";
 const TaskList = () => {
-  const { tasks, dispatchTask } = useContext(TaskContext);
-
+  const { filter, tasks, dispatchTask } = useContext(TaskContext);
+  let filteredTasks = tasks
   const handleRemoveTask = (index) => {
     dispatchTask({
       type: "REMOVE_TASK",
@@ -11,16 +11,21 @@ const TaskList = () => {
   };
 
   const handleCompleteTask = (index) => {
+    console.log('handleCompleteTask',tasks)
     dispatchTask({
       type: "COMPLETE_TASK",
-      title: tasks[index].title,
+      id: tasks[index].id,
     });
   };
 
+  if (filter && filter === 'completed') {
+    filteredTasks = tasks.filter(item => item.completed)
+  }
+  
   return (
     <ul className="list">
-      {tasks &&
-        tasks.map((task, index) => (
+      {filteredTasks &&
+        filteredTasks.map((task, index) => (
           <li className="todo-item" key={index}>
             <input
               type="checkbox"
