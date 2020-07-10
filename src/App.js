@@ -7,19 +7,20 @@ import TaskContext from "./contexts/TaskContext";
 import TaskReducer from "./reducers/Tasks";
 
 export default function App() {
-  const [tasks, setTasks] = useState([
-    { title: "react", completed: false },
-    { title: "redux", completed: true },
-  ]);
-  // let tasks = JSON.parse(localStorage.getItem("tasks"));
+  // const [tasks, setTasks] = useState([
+  //   { title: "react", completed: false },
+  //   { title: "redux", completed: true },
+  // ]);
+  let tasks = JSON.parse(localStorage.getItem("tasks"));
 
   const [state, dispatch] = useReducer(TaskReducer, {
-    tasks,
+    tasks: tasks || [],
   });
 
   return (
     <TaskContext.Provider
       value={{
+        filter: state.filter,
         tasks: state.tasks,
         dispatchTask: dispatch,
       }}

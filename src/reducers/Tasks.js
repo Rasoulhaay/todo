@@ -1,11 +1,14 @@
+import { uuid } from 'uuidv4';
+
 const TaskReducer = (state, action) => {
   let newTasks = [];
 
   switch (action.type) {
     case "ADD_TASK":
       newTasks = [
-        state.tasks,
+        ...state.tasks,
         {
+          id: uuid(),
           title: action.title,
           // id: action.id,
           completed: action.completed,
@@ -40,16 +43,15 @@ const TaskReducer = (state, action) => {
     case "COMPLETE_TASK":
       newTasks = state.tasks;
       let findCompletedIndex = newTasks.findIndex(
-        (task) => task.title === action.title
+        (task) => task.id === action.id
       );
-      newTasks[findCompletedIndex].completed = !newTasks[
+      newTasks[findCompletedIndex].completed = !state.tasks[
         findCompletedIndex
       ].completed;
       localStorage.setItem(
         "tasks",
         JSON.stringify(newTasks)
       );
-
       return {
         ...state,
         tasks: newTasks,
@@ -75,22 +77,18 @@ const TaskReducer = (state, action) => {
         };
       }
     case "SHOW_COMPLETED":
-      newTasks = state.tasks;
-      let completedTasks = newTasks.filter((task) => {
-        return task.completed === true;
-      });
       return {
         ...state,
-        tasks: completedTasks,
+        filter: 'completed'
       };
     // case "SHOW_UNCOMPLETED":
 
     case "SHOW_ALL":
-      newTasks = state.tasks;
       return {
         ...state,
-        tasks: newTasks,
+        filter: 'all'
       };
+    default:
   }
 };
 

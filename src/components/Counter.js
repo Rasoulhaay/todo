@@ -26,6 +26,7 @@ const Counter = () => {
       setAvailables(availableTasks.length);
     }
   });
+
   return (
     <div className="todo-item counter">
       <span className="availables">{availables}</span>
